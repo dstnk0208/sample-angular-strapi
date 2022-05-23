@@ -1,0 +1,10 @@
+# strapi
+app
+data
+
+node_modules
+
+# nodenv
+.node-version
+
+.vscode

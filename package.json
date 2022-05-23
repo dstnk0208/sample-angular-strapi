@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@angular/cli": "^13.3.5",
+    "yarn": "^1.22.18"
+  },
+  "name": "sample-strapi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kohei Hozumi <k.hozumi@thedott.io>",
+  "license": "MIT"
+}
