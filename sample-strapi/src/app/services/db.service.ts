@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpParamsOptions } from '@angular/common/http';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -10,6 +10,11 @@ interface Product {
   unitPrice: number
 }
 
+interface Order {
+  orderId: string
+  userId?: string
+  amount: number
+}
 interface UserSignUp {
   email: string,
   password: string,
@@ -28,38 +33,58 @@ export class DbService {
   constructor(
     private http: HttpClient
   ) { }
-  private productsUrl = 'api/products';
-  private productCountUrl = 'api/products/count';
-  private productFindUrl = 'api/products';
-  private signUpURL = 'api/auth/local/register';
-  private signInUrl = 'api/auth/local';
+  private productsUrl: string = 'api/products';
+  private productCountUrl: string = 'api/products/count';
+  private productFindUrl: string = 'api/products';
+  private ordersUrl: string = 'api/orders';
+  private orderCountUrl: string = 'api/orders/count';
+  private orderFindUrl: string = 'api/orders';
+  private signUpURL: string = 'api/auth/local/register';
+  private signInUrl: string = 'api/auth/local';
+  public options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: this.getAuthHeader()
+    })
+  };
 
-  getProducts(): Observable<Product[]> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.getAuthHeader()
-      })
-    };
-    return this.http.get<Product[]>(this.productsUrl, options)
+  // product api ---
+  getProducts(): Observable<Product[]> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<Product[]>(this.productsUrl, this.options)
   }
 
-  countProducts(): Observable<number> {
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: this.getAuthHeader()
-      })
-    };
-    return this.http.get<number>(this.productCountUrl, options)
+  countProducts(): Observable<number> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<number>(this.productCountUrl, this.options)
   }
 
-  findProducts(id: string): Observable<Product> {
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: this.getAuthHeader()
-      })
-    };
-    return this.http.get<Product>(this.productFindUrl + '/' + id, options)
+  findProducts(id: string): Observable<Product> | undefined{
+    if (!this.isSignIn()) return
+    return this.http.get<Product>(this.productFindUrl + '/' + id, this.options)
+  }
+  
+  // order api ---
+  createOrder(orderId: string, amount: number): Observable<Order> | undefined {
+    // if (!this.isSignIn()) return
+    const userId = this.getUserId()
+    const order: Order = {orderId: orderId, userId: userId!, amount: amount}
+    return this.http.post<Order>(this.ordersUrl, order, this.options)
+  }
+
+  getOrders(): Observable<Order[]> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<Order[]>(this.ordersUrl, this.options)
+  }
+
+  countOrder(): Observable<number> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<number>(this.orderCountUrl, this.options)
+  }
+
+  findOrder(id: string): Observable<Order> | undefined{
+    if (!this.isSignIn()) return
+    return this.http.get<Order>(this.orderFindUrl + '/' + id, this.options)
   }
 
   signUp(user: UserSignUp): Observable<UserSignUp> {
@@ -91,6 +116,10 @@ export class DbService {
       return moment(JSON.parse(expiration!))
   }
     return
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId')
   }
 
   handleError(error: HttpErrorResponse) {

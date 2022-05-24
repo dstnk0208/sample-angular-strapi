@@ -1,1 +1,21 @@
 <h1>注文一覧</h1>
+<h2>(仮実装)注文</h2>
+<div>
+    <label for="order">Order: </label>
+    <input #orderId id="productId" type="text">
+    <input #orderAmount id="amount" type="number">
+    <button type="button" (click)="onCreateOrder(orderId.value, orderAmount.value)">Order</button>
+    {{ order | json }}
+</div>
+
+<div *ngFor="let order of orders">
+    {{ order | json}}
+    {{ num }}
+</div>
+
+<div>
+    <label for="search">Search Order: </label>
+    <input #searchBox id="search" type="text">  
+    <button type="button" (click)="onFindOrder(searchBox.value)">Search</button>
+    {{ order | json }}
+</div>
