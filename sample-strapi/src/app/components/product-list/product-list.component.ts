@@ -22,16 +22,16 @@ export class ProductListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dbService.getProducts().subscribe(products => {
+    this.dbService.getProducts()!.subscribe(products => {
       this.products = products;
     })
-    this.dbService.countProducts().subscribe(num => {
+    this.dbService.countProducts()!.subscribe(num => {
       this.num = num;
     })
   }
   
   onFindProduct(id: string) {
-    this.dbService.findProducts(id).subscribe(product => {
+    this.dbService.findProducts(id)!.subscribe(product => {
       this.product = product;
     })
   }
