@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpParamsOptions } from '@angular/common/http';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -28,38 +28,31 @@ export class DbService {
   constructor(
     private http: HttpClient
   ) { }
-  private productsUrl = 'api/products';
-  private productCountUrl = 'api/products/count';
-  private productFindUrl = 'api/products';
-  private signUpURL = 'api/auth/local/register';
-  private signInUrl = 'api/auth/local';
+  private productsUrl: string = 'api/products';
+  private productCountUrl: string = 'api/products/count';
+  private productFindUrl: string = 'api/products';
+  private signUpURL: string = 'api/auth/local/register';
+  private signInUrl: string = 'api/auth/local';
+  public options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: this.getAuthHeader()
+    })
+  };
 
-  getProducts(): Observable<Product[]> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: this.getAuthHeader()
-      })
-    };
-    return this.http.get<Product[]>(this.productsUrl, options)
+  getProducts(): Observable<Product[]> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<Product[]>(this.productsUrl, this.options)
   }
 
-  countProducts(): Observable<number> {
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: this.getAuthHeader()
-      })
-    };
-    return this.http.get<number>(this.productCountUrl, options)
+  countProducts(): Observable<number> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<number>(this.productCountUrl, this.options)
   }
 
-  findProducts(id: string): Observable<Product> {
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: this.getAuthHeader()
-      })
-    };
-    return this.http.get<Product>(this.productFindUrl + '/' + id, options)
+  findProducts(id: string): Observable<Product> | undefined{
+    if (!this.isSignIn()) return
+    return this.http.get<Product>(this.productFindUrl + '/' + id, this.options)
   }
 
   signUp(user: UserSignUp): Observable<UserSignUp> {
