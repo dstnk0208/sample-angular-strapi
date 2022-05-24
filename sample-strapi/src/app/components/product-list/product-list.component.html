@@ -1,0 +1,12 @@
+<h1>商品一覧</h1>
+<div *ngFor="let p of products">
+    {{ p | json}}
+    {{ num }}
+</div>
+
+<div>
+    <label for="search">Search Product: </label>
+    <input #searchBox id="search" type="text">  
+    <button type="button" (click)="onFindProduct(searchBox.value)">Search</button>
+    {{ product | json }}
+</div>

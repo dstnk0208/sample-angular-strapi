@@ -1,0 +1,20 @@
+<h1>WELCOME MEATSHOP</h1>
+<div [formGroup]="signUpForm">
+    <h2>Register Your Account</h2>
+  
+    <label for="email">E-Mail: </label>
+    <input id="email" type="email" formControlName="email">
+  
+    <label for="password">Password: </label>
+    <input id="password" type="password" formControlName="password">
+  
+    <label for="username">Display Name: </label>
+    <input id="username" type="text" formControlName="username">  
+
+    <button type="button" (click)="onSignUp()">Sign Up</button>
+
+</div>
+
+<div *ngIf="signedUp">
+    CONGRADURATION {{ user }} !!
+</div>

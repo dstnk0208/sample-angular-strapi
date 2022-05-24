@@ -1,0 +1,18 @@
+<h1>SIGN IN</h1>
+<div [formGroup]="signInForm">
+    <h2>Sign In Your Account</h2>
+  
+    <label for="identifier">E-Mail: </label>
+    <input id="identifier" type="email" formControlName="identifier">
+  
+    <label for="password">Password: </label>
+    <input id="password" type="password" formControlName="password">
+  
+    <button type="button" (click)="onSignIn()">Sign In</button>
+
+</div>
+
+<div *ngIf="signedIn">
+    Hi {{ userName }} !!
+    Sign In Status {{ signInStatus}}
+</div>
