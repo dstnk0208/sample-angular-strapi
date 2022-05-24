@@ -29,6 +29,8 @@ export class SignInComponent implements OnInit {
 
   public userName: string = '';
 
+  public userId: string = '';
+
   public signedIn: boolean = false;
 
   public signInStatus: string = '';
@@ -43,6 +45,7 @@ export class SignInComponent implements OnInit {
         this.signedIn = true
         this.signInStatus = 'Sign in is success'
         this.userName = result.user.username
+        this.userId = result.user.id
         this.saveToken(this.token)
       },
       error: (e) => this.signInStatus = 'Failed to sign in'
@@ -51,9 +54,10 @@ export class SignInComponent implements OnInit {
 
   saveToken(token: string): void {
     // 取得したトークンと有効期限をLocalStorageに保存する
-    const expiresAt = moment().add(token, 'second');
-    localStorage.setItem('id_token', token);
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    const expiresAt = moment().add(token, 'second')
+    localStorage.setItem('id_token', token)
+    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()))
+    localStorage.setItem('userId', this.userId)
   }
 
 }

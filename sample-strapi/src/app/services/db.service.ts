@@ -10,6 +10,11 @@ interface Product {
   unitPrice: number
 }
 
+interface Order {
+  orderId: string
+  userId?: string
+  amount: number
+}
 interface UserSignUp {
   email: string,
   password: string,
@@ -31,6 +36,9 @@ export class DbService {
   private productsUrl: string = 'api/products';
   private productCountUrl: string = 'api/products/count';
   private productFindUrl: string = 'api/products';
+  private ordersUrl: string = 'api/orders';
+  private orderCountUrl: string = 'api/orders/count';
+  private orderFindUrl: string = 'api/orders';
   private signUpURL: string = 'api/auth/local/register';
   private signInUrl: string = 'api/auth/local';
   public options = {
@@ -40,6 +48,7 @@ export class DbService {
     })
   };
 
+  // product api ---
   getProducts(): Observable<Product[]> | undefined {
     if (!this.isSignIn()) return
     return this.http.get<Product[]>(this.productsUrl, this.options)
@@ -53,6 +62,29 @@ export class DbService {
   findProducts(id: string): Observable<Product> | undefined{
     if (!this.isSignIn()) return
     return this.http.get<Product>(this.productFindUrl + '/' + id, this.options)
+  }
+  
+  // order api ---
+  createOrder(orderId: string, amount: number): Observable<Order> | undefined {
+    // if (!this.isSignIn()) return
+    const userId = this.getUserId()
+    const order: Order = {orderId: orderId, userId: userId!, amount: amount}
+    return this.http.post<Order>(this.ordersUrl, order, this.options)
+  }
+
+  getOrders(): Observable<Order[]> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<Order[]>(this.ordersUrl, this.options)
+  }
+
+  countOrder(): Observable<number> | undefined {
+    if (!this.isSignIn()) return
+    return this.http.get<number>(this.orderCountUrl, this.options)
+  }
+
+  findOrder(id: string): Observable<Order> | undefined{
+    if (!this.isSignIn()) return
+    return this.http.get<Order>(this.orderFindUrl + '/' + id, this.options)
   }
 
   signUp(user: UserSignUp): Observable<UserSignUp> {
@@ -84,6 +116,10 @@ export class DbService {
       return moment(JSON.parse(expiration!))
   }
     return
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId')
   }
 
   handleError(error: HttpErrorResponse) {
