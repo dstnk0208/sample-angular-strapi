@@ -35,10 +35,8 @@ export class DbService {
   ) { }
   private productsUrl: string = 'api/products';
   private productCountUrl: string = 'api/products/count';
-  private productFindUrl: string = 'api/products';
   private ordersUrl: string = 'api/orders';
   private orderCountUrl: string = 'api/orders/count';
-  private orderFindUrl: string = 'api/orders';
   private signUpURL: string = 'api/auth/local/register';
   private signInUrl: string = 'api/auth/local';
   public options = {
@@ -61,7 +59,7 @@ export class DbService {
 
   findProducts(id: string): Observable<Product> | undefined{
     if (!this.isSignIn()) return
-    return this.http.get<Product>(this.productFindUrl + '/' + id, this.options)
+    return this.http.get<Product>(this.productsUrl + '/' + id, this.options)
   }
   
   // order api ---
@@ -82,9 +80,10 @@ export class DbService {
     return this.http.get<number>(this.orderCountUrl, this.options)
   }
 
-  findOrder(id: string): Observable<Order> | undefined{
+  findOrder(orderId: string): Observable<Order> | undefined{
+    console.log("findOrder", this.isSignIn())
     if (!this.isSignIn()) return
-    return this.http.get<Order>(this.orderFindUrl + '/' + id, this.options)
+    return this.http.get<Order>(this.ordersUrl + '/' + orderId, this.options)
   }
 
   signUp(user: UserSignUp): Observable<UserSignUp> {
@@ -111,7 +110,7 @@ export class DbService {
   }
 
   private getExpiration(): moment.Moment | undefined {
-    const expiration: string | null = localStorage.getItem('expires_at');
+    const expiration: string | null = localStorage.getItem('expires_at')
     if (expiration) {
       return moment(JSON.parse(expiration!))
   }
@@ -125,14 +124,14 @@ export class DbService {
   handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
+      console.error('An error occurred:', error.error)
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `, error.error)
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(() => new Error('Something bad happened; please try again later.'))
   }
 }
