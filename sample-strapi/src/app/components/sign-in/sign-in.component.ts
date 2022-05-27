@@ -53,8 +53,7 @@ export class SignInComponent implements OnInit {
   }
 
   saveToken(token: string): void {
-    // 取得したトークンと有効期限をLocalStorageに保存する
-    const expiresAt = moment().add(token, 'second')
+    const expiresAt = moment().add(1, 'day')
     localStorage.setItem('id_token', token)
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()))
     localStorage.setItem('userId', this.userId)
