@@ -13,30 +13,30 @@ interface Order {
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
-  public orders: Order[] = [];
-  public num: number = 0;
-  public order: Order = {orderId : '', userId : '', amount : 0};
+  public orders: Order[] = []
+  public num: number = 0
+  public order: Order = {orderId : '', userId : '', amount : 0}
 
   constructor(private dbService: DbService) { }
 
   ngOnInit(): void {
     this.dbService.getOrders()?.subscribe(orders => {
-      this.orders = orders;
+      this.orders = orders
     })
     this.dbService.countOrder()?.subscribe(num => {
-      this.num = num;
+      this.num = num
     })
   }
 
   onCreateOrder(orderId: string, amount: string): void {
     this.dbService.createOrder(orderId, Number(amount))?.subscribe(order => {
-      this.order = order;
+      this.order = order
     })
   }
 
   onFindOrder(orderId: string): void {
     this.dbService.findOrder(orderId)?.subscribe(order => {
-      this.order = order;
+      this.order = order
     })
   }
 }
