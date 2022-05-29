@@ -5,11 +5,10 @@
     <input #orderId id="productId" type="text">
     <input #orderAmount id="amount" type="number">
     <button type="button" (click)="onCreateOrder(orderId.value, orderAmount.value)">Order</button>
-    {{ order | json }}
+    {{ orders | json }}
 </div>
 
-<div *ngFor="let order of orders">
-    {{ order | json}}
+<div>
     {{ num }}
 </div>
 
