@@ -85,6 +85,7 @@ export class DbService {
     if (!this.isSignIn()) return
     return this.http.get<Order>(this.ordersUrl + '/' + orderId, this.options)
   }
+  // order api ---
 
   signUp(user: UserSignUp): Observable<UserSignUp> {
     return this.http.post<UserSignUp>(this.signUpURL, user)
@@ -104,7 +105,7 @@ export class DbService {
     return 'Bearer ' + localStorage.getItem('id_token')
   }
 
-  isSignIn(): Boolean {
+  isSignIn(): boolean {
     if (!localStorage.getItem('id_token')) return false
     return moment().isBefore(this.getExpiration())
   }
