@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
-
-interface Order {
-  orderId: string
-  userId?: string
-  amount: number
-}
+import { Order } from 'src/assets/interfaces';
 
 @Component({
   selector: 'app-order',

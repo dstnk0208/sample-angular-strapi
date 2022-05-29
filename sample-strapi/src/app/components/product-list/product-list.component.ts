@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
-
-interface Product {
-  id: string
-  productName: string
-  unitPrice: number
-}
+import { Product } from 'src/assets/interfaces';
 
 @Component({
   selector: 'app-product-list',

@@ -2,12 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DbService } from 'src/app/services/db.service';
-
-interface UserRegister {
-  email: string,
-  password: string,
-  username: string
-}
+import { UserRegister } from 'src/assets/interfaces';
 
 @Component({
   selector: 'app-sign-up',

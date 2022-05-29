@@ -2,12 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DbService } from 'src/app/services/db.service';
+import { UserSignIn } from 'src/assets/interfaces';
 import * as moment from 'moment';
-
-interface UserSignIn {
-  identifier: string,
-  password: string
-}
 
 @Component({
   selector: 'app-sign-in',

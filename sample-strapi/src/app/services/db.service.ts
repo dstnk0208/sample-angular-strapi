@@ -2,29 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpParamsOptions } from '@angular/common/http';
 import { Observable, ObservableInput, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { Order, Product, UserSignIn, UserSignUp,  } from 'src/assets/interfaces';
 import * as moment from 'moment';
-
-interface Product {
-  id: string
-  productName: string
-  unitPrice: number
-}
-
-interface Order {
-  orderId: string
-  userId?: string
-  amount: number
-}
-interface UserSignUp {
-  email: string,
-  password: string,
-  username: string
-}
-
-interface UserSignIn {
-  identifier: string,
-  password: string
-}
 
 @Injectable({
   providedIn: 'root'
