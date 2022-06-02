@@ -60,7 +60,6 @@ export class DbService {
   }
 
   findOrder(orderId: string): Observable<Order> | undefined{
-    console.log("findOrder", this.isSignIn())
     if (!this.isSignIn()) return
     return this.http.get<Order>(this.ordersUrl + '/' + orderId, this.options)
   }
@@ -98,7 +97,7 @@ export class DbService {
   }
 
   getUserId(): string | null {
-    return localStorage.getItem('userId')
+    return localStorage.getItem('user_id')
   }
 
   handleError(error: HttpErrorResponse) {

@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit {
     const expiresAt = moment().add(1, 'day')
     localStorage.setItem('id_token', token)
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()))
-    localStorage.setItem('userId', this.userId)
+    localStorage.setItem('user_id', this.userId)
   }
 
 }
